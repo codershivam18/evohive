@@ -5,6 +5,7 @@
 ![EvoHive UI](https://img.shields.io/badge/UI-Gradio_6.0-indigo)
 ![Engine](https://img.shields.io/badge/Engine-Genetic_Evolution-purple)
 ![LLM](https://img.shields.io/badge/Local_LLM-Ollama-orange)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-EvoHive_Lab-FF3366?style=for-the-badge&logo=rocket)](https://ef6b54c4a8d6d3683e.gradio.live)
 
 ---
 
