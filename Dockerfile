@@ -1,27 +1,25 @@
-# Use Python 3.11 for stability
+# Use Python 3.11
 FROM python:3.11-slim
 
-# Install system dependencies
+WORKDIR /app
+
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Set workspace
-WORKDIR /app
-
-# Copy requirements and install
 COPY requirement.txt .
 RUN pip install --no-cache-dir -r requirement.txt
 
-# Copy project files
 COPY . .
 
 # Expose Gradio port
 EXPOSE 7860
 
-# Set environment variables
+# Environment variables for Gradio
+ENV GRADIO_SERVER_NAME="0.0.0.0"
+ENV GRADIO_SERVER_PORT=7860
 ENV PYTHONUNBUFFERED=1
 
-# Run the application
 CMD ["python", "main.py"]

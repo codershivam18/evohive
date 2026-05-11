@@ -6,58 +6,115 @@ from agents.hive import AgentHive
 from utils import save_best_prompt
 from config import config
 
-# Premium Laboratory CSS
+# Strater-Inspired Premium CSS
 custom_css = """
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono&display=swap');
 
 :root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-    --bg: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
+    --primary: #FF3366; /* Strater Pink */
+    --secondary: #38BDF8; /* Sky Blue */
+    --bg: #FFFFFF;
+    --grid-color: #f1f1f1;
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --card-bg: #FFFFFF;
 }
 
-body { background-color: var(--bg) !important; font-family: 'Outfit', sans-serif !important; }
-.gradio-container { max-width: 1200px !important; }
+body { 
+    background-color: var(--bg) !important; 
+    background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Plus Jakarta Sans', sans-serif !important; 
+    color: var(--text-main) !important;
+}
 
-/* Glassmorphism Effect */
+.gradio-container { 
+    max-width: 1300px !important; 
+    width: 95% !important;
+}
+
+/* Bento-Box Style */
 .glass-panel {
     background: var(--card-bg) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 16px !important;
-    padding: 20px !important;
+    border: 1.5px solid #E2E8F0 !important;
+    border-radius: 32px !important;
+    padding: 30px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
 }
 
 h1 { 
-    background: linear-gradient(90deg, #6366f1, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 600 !important;
-    font-size: 2.5rem !important;
+    color: var(--text-main) !important;
+    font-weight: 800 !important;
+    font-size: clamp(2rem, 6vw, 3.5rem) !important;
+    letter-spacing: -0.04em !important;
     margin-bottom: 0.5rem !important;
 }
 
-.status-badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
+h4 {
+    color: var(--text-muted) !important;
+    font-weight: 500 !important;
+    font-size: 1.1rem !important;
 }
 
-.status-online { background: #10b981; color: white; }
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #E2E8F0;
+    background: white;
+}
+
+.status-online::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #FF3366;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 51, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
+}
 
 /* Custom Chatbot Styling */
-.chatbot-container { border-radius: 12px !important; overflow: hidden !important; }
-
-button.primary {
-    background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
-    border: none !important;
-    transition: transform 0.2s !important;
+.chatbot-container { 
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 20px !important; 
+    background: #F8FAFC !important;
 }
 
-button.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+button.primary {
+    background: var(--text-main) !important; /* High contrast black buttons like Strater */
+    color: white !important;
+    border-radius: 100px !important;
+    padding: 12px 24px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: none !important;
+}
+
+button.primary:hover { 
+    background: var(--primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px -8px rgba(255, 51, 102, 0.5);
+}
+
+/* Accordion Styling */
+.gr-accordion {
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
 """
 
 def create_fitness_plot(history):
@@ -133,14 +190,14 @@ def solve_task(task: str, skip_evo: bool, pop_size: int, num_gens: int):
 
 with gr.Blocks() as interface:
     with gr.Row():
-        with gr.Column(scale=8):
+        with gr.Column(scale=10):
             gr.Markdown(f"# {config.APP_TITLE}")
             gr.Markdown("#### Autonomous Multi-Agent Evolution & Problem Solving")
-        with gr.Column(scale=2):
-            gr.HTML('<div style="text-align: right; margin-top: 20px;"><span class="status-badge status-online">● Hive Online</span></div>')
+        with gr.Column(scale=2, min_width=150):
+            gr.HTML('<div style="text-align: right;"><span class="status-badge status-online">● Hive Online</span></div>')
 
     with gr.Row(elem_classes=["glass-panel"]):
-        with gr.Column(scale=1):
+        with gr.Column(scale=1, min_width=320):
             gr.Markdown("### 🎯 Mission Brief")
             task_input = gr.Textbox(
                 label="Objective", 
@@ -156,7 +213,7 @@ with gr.Blocks() as interface:
             
             run_btn = gr.Button("🚀 START MISSION", variant="primary", elem_id="run-btn")
             
-        with gr.Column(scale=2):
+        with gr.Column(scale=2, min_width=320):
             with gr.Tabs():
                 with gr.TabItem("📊 Mission Control"):
                     status_chat = gr.Chatbot(
@@ -178,9 +235,9 @@ with gr.Blocks() as interface:
 
 if __name__ == "__main__":
     interface.launch(
-        server_name="127.0.0.1", 
+        server_name="0.0.0.0", 
         server_port=7860, 
-        share=False,
+        share=True,
         css=custom_css,
         theme=gr.themes.Default()
     )

@@ -3,7 +3,7 @@ import time
 import threading
 from deap import base, creator, tools
 from config import config
-from utils import get_fast_llm, call_ollama, get_llm
+from utils import get_fast_llm, call_llm, get_llm
 
 # Setup DEAP
 if not hasattr(creator, "FitnessMax"):
@@ -49,7 +49,7 @@ class EvolutionEngine:
             strategy = random.choice(mutation_strategies)
             mutation_prompt = f"Improve the following system prompt based on this strategy: {strategy}\nOriginal Prompt: {original_prompt}\nReturn ONLY the new improved prompt text."
             try:
-                new_prompt = call_ollama(mutation_prompt, model=config.FAST_MODEL)
+                new_prompt = call_llm(mutation_prompt, model=config.FAST_MODEL)
                 individual[0] = new_prompt.strip()
             except:
                 pass
@@ -58,7 +58,7 @@ class EvolutionEngine:
     def crossover(self, ind1, ind2):
         synthesis_prompt = f"Combine the best elements of these two system prompts into one superior prompt.\nPrompt A: {ind1[0]}\nPrompt B: {ind2[0]}\nReturn ONLY the combined superior prompt text."
         try:
-            combined = call_ollama(synthesis_prompt, model=config.FAST_MODEL)
+            combined = call_llm(synthesis_prompt, model=config.FAST_MODEL)
             ind1[0] = combined.strip()
         except:
             pass
@@ -89,7 +89,7 @@ class EvolutionEngine:
             Return ONLY a single numerical score between 0.0 and 1.0 (e.g., 0.85). 
             Do not explain. Just the number."""
             
-            score_text = call_ollama(judge_prompt, model=config.FAST_MODEL)
+            score_text = call_llm(judge_prompt, model=config.FAST_MODEL)
             import re
             numbers = re.findall(r"[-+]?\d*\.\d+|\d+", score_text)
             score = float(numbers[0]) if numbers else 0.5

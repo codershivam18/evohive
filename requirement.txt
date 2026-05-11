@@ -2,9 +2,11 @@ gradio
 langchain
 langchain-ollama
 langchain-community
+langchain-openai
 chromadb
 deap
 ollama
 networkx
 plotly
 matplotlib
+python-dotenv

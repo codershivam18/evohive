@@ -1,13 +1,21 @@
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
 
 # Configuration for EvoHive
 class Config:
     # --- LLM Settings (Optimized for Lightning Speed on RTX 3050) ---
     # We use 3b for EVERYTHING to avoid VRAM swapping
-    MAIN_MODEL = "llama3.2:3b" 
-    FAST_MODEL = "llama3.2:3b"
+    MAIN_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b") 
+    FAST_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b")
     # Embedding model for memory
     EMBEDDING_MODEL = "nomic-embed-text"
+    
+    # Cloud API Settings (For public deployment)
+    API_KEY = os.getenv("LLM_API_KEY", None)
+    BASE_URL = os.getenv("LLM_BASE_URL", None) # e.g. https://api.groq.com/openai/v1
     
     # --- Evolution Parameters ---
     POPULATION_SIZE = 12          # Balanced for quality and speed
