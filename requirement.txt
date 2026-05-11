@@ -1,0 +1,10 @@
+gradio
+langchain
+langchain-ollama
+langchain-community
+chromadb
+deap
+ollama
+networkx
+plotly
+matplotlib
